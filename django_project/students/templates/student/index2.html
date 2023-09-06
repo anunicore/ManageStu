@@ -1,0 +1,102 @@
+{% extends "student/base.html" %}
+
+{% block body %}
+<h3 class="m-4">All Students</h3>
+<div class="row">
+  <div class="col-12">
+    <!--
+      students is a variable in views.py
+      if have student at db then display them in a table that will be located inside 
+      the card-header
+    -->
+    {% if students %} 
+    <div class="card bg-light ms-4 me-4 mb-4"> <!-- ms-4 set for margin left value is 4; me-4 set for margin riht value is 4; mb-4 set for margin bottom value is 4-->
+      <div class="card-header">
+        <i class="fa-solid fa-list fa-lg"></i> Students Records
+      </div>
+      <div class="card-body">
+
+        <p class="card-text">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">Student Number</th>
+                  <th scope="col">First Name</th>
+                  <th scope="col">Last Name</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Field of Study</th>
+                  <th scope="col">GPA</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for student in students %}
+                <tr>
+                  <td>{{ student.student_number }}</td>
+                  <td>{{ student.first_name }}</td>
+                  <td>{{ student.last_name }}</td>
+                  <td>{{ student.email }}</td>
+                  <td>{{ student.field_of_study }}</td>
+                  <td>{{ student.gpa }}</td> <!-- <td> are already exist in views.py that it took variable from -->
+                  <td>
+                    <button type="button" class="btn fa-bitcoin-sign me-1" href="{% url 'view_student' student.id %}" data-bs-toggle="modal" data-bs-target="#myModal{{student.id}}">
+                      <i class="fa-solid fa-info-circle"></i>
+                    </button>
+
+                    <!-- Modal View Component --> 
+                    <!-- Note to beginer to know (myself)
+
+                      - The tab index attribute explicitly defines the navigation order for focusable elements within a page it can also be used to define whether elements should be focusable or not.
+                      - The tab index equals -1 option removes the element from the default navigation flow that is a user can get to it using the keyboard tab key.
+                        However it allows the elements to receive programmatic focus which mean that the focus can be set to it from a link or a button in our case here
+                      => The tab index equals -1 option is very useful for element that may need to have a focus on them but we dont want users to  get to those elements using the keyboard tab key
+                      - For instance, the modal dialog window when open the focus should be set to the model a screen reader will begin reading and the keyboard will begin navigating within the model because the model is not focusable by 
+                        default we need to assign the tab index equals -1 option to it to allow for focus to be set on the modal the area that's labeled by attribute identifies an elements that lables the current element 
+
+                      - The "aria-hidden" set to true tells the assistive technologies for those with disabilities to skip the modal's dom elements
+                        Dom is an acronym for document object model the document object model is programming interface for web documents it represents the page so that programs can change the document structure style and content
+                        + The dom represents the document as a tree-like structure with notes and objects that describes how all of these html elements are related to each other
+                          that way programming languages can interact with the page
+                    -->
+                    <div class="modal" id="myModal{{student.id}}" tabindex="-1" aria-labelledby="myModalLabel1" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title">
+                              Student: {{ student.first_name }} {{ student.last_name }}
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true"></span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <ul class="list-unstyled">
+                              <li>Student Number: <strong>{{ student.student_number }}</strong></li>
+                              <li>First Name: <strong>{{ student.first_name }}</strong></li>
+                              <li>Last Name: <strong>{{ student.last_name }}</strong></li>
+                              <li>Email: <strong>{{ student.email }}</strong></li>
+                              <li>Field of Study: <strong>{{ student.field_of_study }}</strong></li>
+                              <li>Personnel GPA: <strong>{{ student.gpa }}</strong></li>
+                            </ul>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" >Close</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </p>
+      </div>
+    {% else %}
+    <h5 class="alert alert-primary ms-4 me-4">No student records</h5>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

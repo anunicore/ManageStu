@@ -1,0 +1,65 @@
+{% extends "student/base.html" %}
+{% block body %}
+  <h3 class="text-center m-4">Add Student</h3>
+  {% if success %}
+    <div class="alert alert-success" role="alert">
+      The new student added successfully.
+      <a href="{% url 'index' %}" class="alert-link">Go to Home Page.</a>
+    </div>
+  {% else %}
+    <div class="row justify-content-center">
+      <div class="col-6">
+        <div class="card border-primary mb-3">
+          <div class="card-header">
+            <i class="fa-regular fa-address-card fa-xl"></i> Student Registration
+          </div>
+          <div class="card-body">
+            <form action="{% url 'add' %}" method="POST">
+              {% csrf_token %}
+              {{ form.as_p }}
+              <button type="submit" class="btn btn-primary">Add</button>
+              <a href="{% url 'index' %}" class="btn btn-secondary">Cancel</a>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}
+
+    <!-- <h3 class="text-center m-4">Add Student</h3>
+    <div class="alert alert-success" role="alert">
+        The new student added successfully.
+        <a href="{% url 'index' %}" class="alert-link">Go to Home Page.</a>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-6">
+            <div class="card bg-light mb-3">
+                <div class="card-header">
+                    <i class="fa-light fa-address-card fa-lg"></i> Student Registration
+                </div>
+                <div class="card-body">
+                    <form action="{% url 'add' %}" method="POST">
+                         <!-csrf stand for cross sight request forgery it's a security vulnerability that is inherent in some forms if they are not designed in a secure way
+                        => If user could forge a request to a particular website using form on their own seperate website. You might imagine that someone on a different website might trick the user into 
+                        submiting a form that submits its data to our add student function that adds a new student to the db and maybe that's not a big deal for some project,
+                        but in fact a situation in a more sensitive context like a bank for example Tasariri big deal a bank might have a form on their website for transfering money frome one user to another if they are vulnerable to the cross-site 
+                        request forgery attack some else on different website could trick the user into submiting  a form to their websdite that are not vulnerable to that particular security vulnerability
+                        Forms that dont allow for a quest to be foreged by another website. One strategy that can be used to deal with these sorts of attacks 
+                        is to add into our form a hidden cross-site request foregery token or a csrf token which a unique token that's generated for every session.
+
+                        => So every time a different user visits this particular form they see a differnet csrf token and then when the user submits the form they are submitting that token with the form and then our web application 
+                        if it valid the application allows the form submission to go through this mean that an adversary would be able to fake a request to our website because 
+                        that adversary doesnt know specifically what the generated token is to they would fail to check for 
+                        csrf validation it's easy to add this token to our html page. Since Django has it built in we only have to add inside the curly brace and percent sign csrf underscore token you should use this template tag for
+                        all html form by default in Django its turn on
+                        ->
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-primary">Add</button>
+                        <a href="{% url 'index' %}" class="btn btn-secondary">Cancel</a>
+                    </form>
+                </div>
+            </div>
+        </div> <!-The boostrap allow 12 column across a page so we can use maximum 12. col-6 means div spans 6 of 12 columns so thats a half->
+    </div> -->
